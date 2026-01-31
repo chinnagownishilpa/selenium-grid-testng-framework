@@ -1,210 +1,125 @@
-\# Selenium Grid Automation Framework (TestNG + Cucumber)
+Selenium Grid + TestNG + Jenkins Automation Framework
 
+This project demonstrates a real-world Selenium automation framework with cross-browser and parallel execution using Selenium Grid, TestNG, Maven, and Jenkins CI.
 
+Tech Stack
 
-This project is a real-world Selenium automation framework built to demonstrate:
+Java 11
 
-\- Cross-browser execution
+Selenium 4
 
-\- Parallel execution
+TestNG
 
-\- Selenium Grid integration
+Cucumber
 
-\- CI readiness with Jenkins
+Maven
 
+Selenium Grid
 
+Jenkins
 
----
+GitHub
 
+Key Features
 
+Cross-browser execution (Chrome, Edge, Firefox)
 
-\## 🔧 Tech Stack
+Parallel execution using TestNG and Jenkins Pipeline
 
+Selenium Grid based execution using RemoteWebDriver
 
+Thread-safe WebDriver management using ThreadLocal
 
-\- Java 11
+Maven profiles for browser selection
 
-\- Selenium 4
+CI-ready Jenkins pipeline
 
-\- TestNG
+Cucumber BDD framework with TestNG runner
 
-\- Cucumber (BDD)
-
-\- Maven
-
-\- Selenium Grid (Standalone / Distributed)
-
-\- Jenkins (CI)
-
-
-
----
-
-
-
-\## 📁 Framework Architecture
-
-
-
-```text
-
+Project Structure
 src
+ └── test
+     ├── java
+     │   ├── factory        (DriverFactory)
+     │   ├── hooks          (Cucumber Hooks)
+     │   ├── runners        (TestNG Runner)
+     │   ├── stepdefinitions
+     │   └── utils
+     └── resources
+         ├── features
+         └── config
 
-&nbsp;├── main
+Driver Strategy
 
-&nbsp;│    └── java
+Local Execution
 
-&nbsp;│         ├── factory        → DriverFactory (Local + Grid)
+Uses WebDriverManager
 
-&nbsp;│         ├── pages          → Page Object Model
+Grid Execution
 
-&nbsp;│         └── utils          → Config, Waits, Helpers
+Uses RemoteWebDriver
 
-&nbsp;│
+Controlled via grid.enabled=true
 
-&nbsp;├── test
-
-&nbsp;│    ├── java
-
-&nbsp;│    │     ├── runners       → TestNG Cucumber Runner
-
-&nbsp;│    │     ├── stepdefinitions
-
-&nbsp;│    │     └── hooks
-
-&nbsp;│    │
-
-&nbsp;│    └── resources
-
-&nbsp;│          ├── features      → Cucumber feature files
-
-&nbsp;│          └── config        → config.properties
-
-
-
-
-
-🌐 Selenium Grid Support
-
-
-
-The framework supports execution on:
-
-
-
-Local browsers
-
-
-
-Selenium Grid (RemoteWebDriver)
-
-
-
-Configuration is controlled via:
-
-
+Configuration
 
 config.properties
 
-
-
-Maven profiles
-
-
-
-Example:
-
-
-
-grid.enabled=true
-
-grid.url=http://<GRID-IP>:4444/wd/hub
-
 browser=chrome
+grid.enabled=true
+grid.url=http://<GRID-IP>:4444/wd/hub
+app.url=https://demo.guru99.com/V4/
 
+Maven Profiles
+-Pchrome
+-Pedge
+-Pfirefox
 
-
-🚀 Execution Modes
-
-1️⃣ Local Execution
-
-mvn clean test
-
-
-
-2️⃣ Cross-Browser Execution
-
+Run Tests Locally
 mvn clean test -Pchrome
-
-mvn clean test -Pfirefox
 
 mvn clean test -Pedge
 
+Run Tests on Selenium Grid
+mvn clean test -Pchrome -Dgrid.enabled=true
 
+mvn clean test -Pedge -Dgrid.enabled=true
 
-3️⃣ Parallel Execution
+Jenkins Integration
 
+Jenkins Freestyle and Pipeline jobs supported
 
+Parallel execution using Jenkins Pipeline
 
-Enabled via TestNG + Maven Surefire
+Chrome and Edge executed in parallel
 
+Grid-based execution avoids local browser dependency
 
+Jenkins Pipeline (Parallel Browsers)
+parallel {
+    stage('Chrome') {
+        steps {
+            bat 'mvn clean test -Pchrome -Dgrid.enabled=true'
+        }
+    }
+    stage('Edge') {
+        steps {
+            bat 'mvn clean test -Pedge -Dgrid.enabled=true'
+        }
+    }
+}
 
-Thread-safe driver management using ThreadLocal
+Execution Highlights
 
+Chrome and Edge run simultaneously
 
+Stable execution in CI
 
-🔁 Jenkins Ready
+No driver conflicts
 
+Scalable and production-ready design
 
+Author
 
-This project is designed to run directly from Jenkins:
-
-
-
-Source Code: GitHub
-
-
-
-Build Tool: Maven
-
-
-
-Supports Grid-based execution from CI
-
-
-
-📌 Key Highlights
-
-
-
-Thread-safe WebDriver handling
-
-
-
-Clean Page Object Model
-
-
-
-Environment-driven execution
-
-
-
-Grid + Parallel execution ready
-
-
-
-CI-friendly design
-
-
-
-👩‍💻 Author
-
-
-
-Shilpa
-
+Shilpa Chinnagowni
 QA Automation Engineer
-
-7+ years experience in Manual + Automation Testing
-
