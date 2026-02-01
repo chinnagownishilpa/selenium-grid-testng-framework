@@ -19,12 +19,25 @@ public class ConfigReader {
 		}
 		return prop;
 	}
+	
 
-	public static String get(String key) {
-		String value = System.getProperty(key);
-		if (value != null) {
-			return value;
-		}
-		return getProperties().getProperty(key);
-	}
+
+public static String get(String key) {
+    String value = System.getProperty(key);
+    if (value == null || value.isEmpty()) {
+        value = getProperties().getProperty(key);
+    }
+    return value;
 }
+
+}
+
+//public static String get(String key) {
+//    String sysValue = System.getProperty(key);
+//    if (sysValue != null && !sysValue.trim().isEmpty()) {
+//        return sysValue;
+//    }
+//    return getProperties().getProperty(key);
+//}
+//
+//}

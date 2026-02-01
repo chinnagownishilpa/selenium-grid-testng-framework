@@ -19,8 +19,7 @@ public class DriverFactory {
 	private static ThreadLocal<WebDriver> driver = new ThreadLocal<>();
 
 	public static void initDriver() {
-		
-		
+	
 		try {
 
 			boolean isGrid = Boolean.parseBoolean(ConfigReader.get("grid.enabled"));
@@ -63,9 +62,16 @@ public class DriverFactory {
 	}
 
 	private static WebDriver createRemoteDriver(String browser) throws Exception {
-		URL gridUrl = new URL(ConfigReader.get("grid.url"));
 
-		switch (browser) {
+	    String gridUrlValue = ConfigReader.get("grid.url");
+
+	    if (gridUrlValue == null || gridUrlValue.trim().isEmpty()) {
+	        throw new RuntimeException("grid.url is NULL or EMPTY. Please set it in config.properties or via Maven -Dgrid.url");
+	    }
+
+	    URL gridUrl = new URL(gridUrlValue);
+
+	    switch (browser) {
 		case "chrome":
 			ChromeOptions chromeOptions = new ChromeOptions();
 			chromeOptions.setPlatformName("WINDOWS");

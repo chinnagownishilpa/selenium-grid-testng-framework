@@ -62,10 +62,6 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>3.2.5</version>
 				<configuration>
-					<systemPropertyVariables>
-						<browser>${browser}</browser>
-						<grid.enabled>${grid.enabled}</grid.enabled>
-					</systemPropertyVariables>
 					<includes>
 						<include>**/*Runner.java</include>
 					</includes>

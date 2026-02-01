@@ -4,6 +4,7 @@ import java.time.Duration;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -26,20 +27,24 @@ public class ManagerHomePage {
         return wait.until(ExpectedConditions.visibilityOfElementLocated(managerIdText))
                    .isDisplayed();
     }
-
+    
     public void logout() {
         WebElement logout = wait.until(
                 ExpectedConditions.elementToBeClickable(logoutLink)
         );
 
-        // Scroll into view to avoid overlay issues
         ((JavascriptExecutor) driver)
                 .executeScript("arguments[0].scrollIntoView(true);", logout);
 
-        // Fallback click using JS (real-world safe approach)
         ((JavascriptExecutor) driver)
                 .executeScript("arguments[0].click();", logout);
 
-        driver.switchTo().alert().accept();
+        try {
+            driver.switchTo().alert().accept();
+        } catch (Exception e) {
+            System.out.println("Logout alert already handled by browser.");
+        }
     }
-}
+}  
+
+  

@@ -35,6 +35,7 @@ public class ManagerHomeSteps {
         homePage.logout();
     }
     
+    
     @Then("error alert should be displayed")
     public void error_alert_should_be_displayed() {
 
