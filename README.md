@@ -1,125 +1,147 @@
-Selenium Grid + TestNG + Jenkins Automation Framework
+Selenium Grid TestNG Automation Framework
+A real-world Selenium automation framework built using Java, Selenium 4, TestNG, Cucumber, Maven, with support for Selenium Grid, parallel execution, and Jenkins CI.
 
-This project demonstrates a real-world Selenium automation framework with cross-browser and parallel execution using Selenium Grid, TestNG, Maven, and Jenkins CI.
-
-Tech Stack
-
+Tech Stack:
 Java 11
-
 Selenium 4
-
 TestNG
-
 Cucumber
-
 Maven
-
 Selenium Grid
-
+GitHub
 Jenkins
 
-GitHub
+📂 Project Structure 
+├── src
+│   ├── main
+│   │   └── java
+│   │       ├── factory
+│   │       │   └── DriverFactory.java
+│   │       ├── pages
+│   │       │   ├── LoginPage.java
+│   │       │   └── ManagerHomePage.java
+│   │       └── utils
+│   │           ├── AlertUtil.java
+│   │           ├── ConfigReader.java
+│   │           ├── ExtentReportManager.java
+│   │           └── ScreenshotUtil.java
+│   │
+│   └── test
+│       ├── java
+│       │   ├── hooks
+│       │   │   └── Hooks.java
+│       │   ├── runners
+│       │   │   └── TestRunner.java
+│       │   └── stepdefinitions
+│       │       ├── Guru99LoginSteps.java
+│       │       └── ManagerHomeSteps.java
+│       │
+│       └── resources
+│           ├── config
+│           │   └── config.properties
+│           └── features
+│               ├── Guru99Login.feature
+│               └── ManagerAccess.feature
+│
+├── pom.xml
+├── README.md
+├── target
+└── test-output
 
-Key Features
+⚙️ Default Configuration:
+By default, the framework runs locally on Chrome.
 
-Cross-browser execution (Chrome, Edge, Firefox)
-
-Parallel execution using TestNG and Jenkins Pipeline
-
-Selenium Grid based execution using RemoteWebDriver
-
-Thread-safe WebDriver management using ThreadLocal
-
-Maven profiles for browser selection
-
-CI-ready Jenkins pipeline
-
-Cucumber BDD framework with TestNG runner
-
-Project Structure
-src
- └── test
-     ├── java
-     │   ├── factory        (DriverFactory)
-     │   ├── hooks          (Cucumber Hooks)
-     │   ├── runners        (TestNG Runner)
-     │   ├── stepdefinitions
-     │   └── utils
-     └── resources
-         ├── features
-         └── config
-
-Driver Strategy
-
-Local Execution
-
-Uses WebDriverManager
-
-Grid Execution
-
-Uses RemoteWebDriver
-
-Controlled via grid.enabled=true
-
-Configuration
-
-config.properties
-
+config.properties:
 browser=chrome
-grid.enabled=true
-grid.url=http://<GRID-IP>:4444/wd/hub
-app.url=https://demo.guru99.com/V4/
+grid.enabled=false
+grid.url=http://localhost:4444/wd/hub
 
-Maven Profiles
--Pchrome
--Pedge
--Pfirefox
+No Grid or browser parameters are required for a basic run.
 
-Run Tests Locally
-mvn clean test -Pchrome
+▶️ Run Tests Locally
+Run with default settings (Chrome, Local)
+mvn clean test
 
-mvn clean test -Pedge
+🌐 Run with Selenium Grid
+Start Selenium Grid (example using standalone)
+java -jar selenium-server-4.x.x.jar standalone
 
-Run Tests on Selenium Grid
+Ensure Grid is running at: http://localhost:4444
+
+Run on Grid with Chrome:
 mvn clean test -Pchrome -Dgrid.enabled=true
 
+Run on Grid with Edge (explicit browser selection):
 mvn clean test -Pedge -Dgrid.enabled=true
 
-Jenkins Integration
+ℹ️ Important
+Edge is not the default browser.
+It must be passed explicitly using the Maven profile -Pedge.
 
-Jenkins Freestyle and Pipeline jobs supported
+🔁 Parallel Execution
+Parallel execution is enabled using:
+TestNG DataProvider(parallel = true)
+Thread-safe ThreadLocal<WebDriver>
+Selenium Grid for cross-browser concurrency
 
-Parallel execution using Jenkins Pipeline
+This allows:
+Multiple scenarios
+Multiple browsers
+Parallel execution without session conflicts
 
-Chrome and Edge executed in parallel
+🧪 Test Runner Configuration
+TestRunner.java
+@DataProvider(parallel = true)
+public Object[][] scenarios() {
+    return super.scenarios();
+}
 
-Grid-based execution avoids local browser dependency
+🔄 Jenkins CI Configuration
+Sample Jenkins Pipeline
+pipeline {
+    agent any
 
-Jenkins Pipeline (Parallel Browsers)
-parallel {
-    stage('Chrome') {
-        steps {
-            bat 'mvn clean test -Pchrome -Dgrid.enabled=true'
+    stages {
+        stage('Checkout Code') {
+            steps {
+                git branch: 'main',
+                    url: 'https://github.com/chinnagownishilpa/selenium-grid-testng-framework.git'
+            }
         }
-    }
-    stage('Edge') {
-        steps {
-            bat 'mvn clean test -Pedge -Dgrid.enabled=true'
+
+        stage('Parallel Browser Execution') {
+            parallel {
+                stage('Chrome Tests') {
+                    steps {
+                        bat 'mvn clean test -Pchrome -Dgrid.enabled=true'
+                    }
+                }
+                stage('Edge Tests') {
+                    steps {
+                        bat 'mvn clean test -Pedge -Dgrid.enabled=true'
+                    }
+                }
+            }
         }
     }
 }
 
-Execution Highlights
+✅ Key Highlights
 
-Chrome and Edge run simultaneously
+Supports local and Grid execution
+Chrome is default, Edge must be passed explicitly
+Thread-safe WebDriver using ThreadLocal
+Parallel execution at scenario level
+CI-ready with Jenkins
 
-Stable execution in CI
+📌 Notes
+All configuration is externalized
+System properties override config.properties
+Same commands work locally and in Jenkins
 
-No driver conflicts
-
-Scalable and production-ready design
+📎 GitHub Repository
+https://github.com/chinnagownishilpa/selenium-grid-testng-framework
 
 Author
-
-Shilpa Chinnagowni
+Shilpa Chinnagowni 
 QA Automation Engineer
