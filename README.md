@@ -2,14 +2,14 @@ Selenium Grid TestNG Automation Framework
 A real-world Selenium automation framework built using Java, Selenium 4, TestNG, Cucumber, Maven, with support for Selenium Grid, parallel execution, and Jenkins CI.
 
 Tech Stack:
-Java 11
-Selenium 4
-TestNG
-Cucumber
-Maven
-Selenium Grid
-GitHub
-Jenkins
+- Java 11
+- Selenium 4
+- TestNG
+- Cucumber
+- Maven
+- Selenium Grid
+- Jenkins
+
 
 📂 Project Structure 
 ├── src
@@ -71,7 +71,7 @@ Ensure Grid is running at: http://localhost:4444
 Run on Grid with Chrome:
 mvn clean test -Pchrome -Dgrid.enabled=true
 
-Run on Grid with Edge (explicit browser selection):
+Run on Grid with Edge:
 mvn clean test -Pedge -Dgrid.enabled=true
 
 ℹ️ Important
@@ -97,6 +97,8 @@ public Object[][] scenarios() {
 }
 
 🔄 Jenkins CI Configuration
+Jenkins executes Chrome and Edge in parallel using separate Maven profiles.
+
 Sample Jenkins Pipeline
 pipeline {
     agent any
